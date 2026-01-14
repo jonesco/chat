@@ -16,7 +16,7 @@ export interface Message {
 export default function App() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [chatPanelWidth, setChatPanelWidth] = useState(320); // Default 320px
-  const [isChatPanelOpen, setIsChatPanelOpen] = useState(false);
+  const [isChatPanelOpen, setIsChatPanelOpen] = useState(true);
   const [isTearsheetOpen, setIsTearsheetOpen] = useState(false);
   const [tearsheetData, setTearsheetData] = useState<{ title: string; ticketId: string } | null>(null);
 
