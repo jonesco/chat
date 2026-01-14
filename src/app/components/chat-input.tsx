@@ -142,7 +142,7 @@ export function ChatInput({ onSendMessage, hasChatStarted, chatPanelWidth }: Cha
                 </div>
 
                 {/* Second Row - Tools (shown when focused) */}
-                <div className={`border-t border-[#393939] px-4 transition-all duration-500 ease-in-out overflow-hidden ${isInputExpanded ? 'max-h-20 py-3 opacity-100' : 'max-h-0 py-0 opacity-0'}`}>
+                <div className={`border-t border-[#393939] px-4 transition-all duration-500 ease-in-out ${isInputExpanded ? 'max-h-20 py-3 opacity-100 overflow-visible' : 'max-h-0 py-0 opacity-0 overflow-hidden'}`}>
                   <div className={`flex items-center gap-4 transition-opacity duration-300 ${isInputExpanded ? 'opacity-100 delay-150' : 'opacity-0'}`}>
                     <button
                       type="button"
