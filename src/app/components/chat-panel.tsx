@@ -1,6 +1,6 @@
 import { Message } from '@/app/App';
 import { Sparkles, MoreVertical, X, Plus, History } from 'lucide-react';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { Tooltip, TooltipTrigger, TooltipContent } from './ui/tooltip';
 import { TicketArtifact } from './ticket-artifact';
 
@@ -18,6 +18,17 @@ export function ChatPanel({ messages, width, onWidthChange, onClose, onOpenTears
   const [isHovering, setIsHovering] = useState(false);
   const startXRef = useRef(0);
   const startWidthRef = useRef(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const starterContentRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Scroll to show latest content when messages change
+  useLayoutEffect(() => {
+    if (messages.length > 0 && scrollContainerRef.current) {
+      // Scroll to the bottom to show latest message
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -110,93 +121,97 @@ export function ChatPanel({ messages, width, onWidthChange, onClose, onOpenTears
         </div>
       </div>
 
-      {/* Chat Messages or Widgets */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.length === 0 ? (
-          /* Metric cards when no conversation */
-          <div className="space-y-3">
-            {/* Header */}
-            <div className="mb-4">
-              <div className="text-sm text-white font-medium">At a glance</div>
-              <div className="text-xs text-gray-500">
-                {new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}, {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-              </div>
+      {/* Chat Messages and Widgets */}
+      <div ref={scrollContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4">
+        {/* Metric cards - always visible */}
+        <div ref={starterContentRef} className="space-y-3">
+          {/* Header */}
+          <div className="mb-4">
+            <div className="text-sm text-white font-medium">At a glance</div>
+            <div className="text-xs text-gray-500">
+              {new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}, {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
             </div>
-            {/* Row 1 - Availability and Error Budget */}
-            <div className="grid grid-cols-2 gap-3">
-              {/* Availability */}
-              <div className="bg-[#0d0d0d] border border-[#262626] rounded-lg p-3">
-                <div className="text-xs text-gray-400 mb-2">Availability</div>
+          </div>
+          {/* Row 1 - Availability and Error Budget */}
+          <div className="grid grid-cols-2 gap-3">
+            {/* Availability */}
+            <div className="bg-[#0d0d0d] border border-[#262626] rounded-lg p-3 cursor-pointer hover:border-[#404040] transition-colors">
+              <div className="text-xs text-gray-400 mb-2">Availability</div>
+              <div className="flex items-baseline gap-2">
+                <span className="text-yellow-500">&#9888;</span>
+                <span className="text-2xl font-semibold text-white">99.21%</span>
+              </div>
+              <div className="text-xs text-red-400 mt-1">&#9660; 0.4%</div>
+              <div className="text-xs text-gray-500 mt-1">Target: 99.94%</div>
+            </div>
+
+            {/* Error Budget */}
+            <div className="bg-[#0d0d0d] border border-[#262626] rounded-lg p-3 cursor-pointer hover:border-[#404040] transition-colors">
+              <div className="text-xs text-gray-400 mb-2">Error budget</div>
+              <div className="flex items-baseline gap-2">
+                <span className="text-red-500">&#9679;</span>
+                <span className="text-2xl font-semibold text-white">4.3min</span>
+              </div>
+              <div className="text-xs text-gray-500 mt-1">Budget: 504min</div>
+            </div>
+          </div>
+
+          {/* MTTR */}
+          <div className="bg-[#0d0d0d] border border-[#262626] rounded-lg p-3 cursor-pointer hover:border-[#404040] transition-colors">
+            <div className="text-xs text-gray-400 mb-2">MTTR</div>
+            <div className="flex items-center justify-between">
+              <div>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-yellow-500">&#9888;</span>
-                  <span className="text-2xl font-semibold text-white">99.21%</span>
+                  <span className="text-green-500">&#10003;</span>
+                  <span className="text-2xl font-semibold text-white">38min</span>
                 </div>
-                <div className="text-xs text-red-400 mt-1">&#9660; 0.4%</div>
-                <div className="text-xs text-gray-500 mt-1">Target: 99.94%</div>
+                <div className="text-xs text-green-400 mt-1">&#9660; 8</div>
+                <div className="text-xs text-gray-500 mt-1">SLO: 54min</div>
               </div>
-
-              {/* Error Budget */}
-              <div className="bg-[#0d0d0d] border border-[#262626] rounded-lg p-3">
-                <div className="text-xs text-gray-400 mb-2">Error budget</div>
-                <div className="flex items-baseline gap-2">
-                  <span className="text-red-500">&#9679;</span>
-                  <span className="text-2xl font-semibold text-white">4.3min</span>
-                </div>
-                <div className="text-xs text-gray-500 mt-1">Budget: 504min</div>
-              </div>
-            </div>
-
-            {/* MTTR */}
-            <div className="bg-[#0d0d0d] border border-[#262626] rounded-lg p-3">
-              <div className="text-xs text-gray-400 mb-2">MTTR</div>
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-green-500">&#10003;</span>
-                    <span className="text-2xl font-semibold text-white">38min</span>
-                  </div>
-                  <div className="text-xs text-green-400 mt-1">&#9660; 8</div>
-                  <div className="text-xs text-gray-500 mt-1">SLO: 54min</div>
-                </div>
-                <div className="h-8 w-24 flex items-end gap-px">
-                  {[40, 45, 42, 38, 44, 40, 36, 38, 35, 38, 40, 36].map((h, i) => (
-                    <div key={i} className="flex-1 bg-green-500/60 rounded-sm" style={{ height: `${h}%` }} />
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Cost */}
-            <div className="bg-[#0d0d0d] border border-[#262626] rounded-lg p-3">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-green-500">&#9672;</span>
-                <span className="text-xs text-white font-medium">Cost</span>
-              </div>
-              <div className="text-xs text-gray-400 mb-1">Total cluster cost</div>
-              <div className="flex items-center justify-between">
-                <div>
-                  <span className="text-2xl font-semibold text-white">$5,331</span>
-                  <div className="text-xs text-green-400 mt-1">&#9660; 4</div>
-                </div>
-                <div className="h-8 w-24 flex items-end gap-px">
-                  {[60, 55, 58, 52, 50, 54, 48, 52, 50, 48, 52, 50].map((h, i) => (
-                    <div key={i} className="flex-1 bg-green-500/60 rounded-sm" style={{ height: `${h}%` }} />
-                  ))}
-                </div>
+              <div className="h-8 w-24 flex items-end gap-px">
+                {[40, 45, 42, 38, 44, 40, 36, 38, 35, 38, 40, 36].map((h, i) => (
+                  <div key={i} className="flex-1 bg-green-500/60 rounded-sm" style={{ height: `${h}%` }} />
+                ))}
               </div>
             </div>
           </div>
-        ) : (
-          /* Chat messages when conversation exists */
-          <>
-            <div className="text-xs text-gray-500 text-right mb-2">
-              You 12:21
-            </div>
 
+          {/* Cost */}
+          <div className="bg-[#0d0d0d] border border-[#262626] rounded-lg p-3 cursor-pointer hover:border-[#404040] transition-colors">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-green-500">&#9672;</span>
+              <span className="text-xs text-white font-medium">Cost</span>
+            </div>
+            <div className="text-xs text-gray-400 mb-1">Total cluster cost</div>
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="text-2xl font-semibold text-white">$5,331</span>
+                <div className="text-xs text-green-400 mt-1">&#9660; 4</div>
+              </div>
+              <div className="h-8 w-24 flex items-end gap-px">
+                {[60, 55, 58, 52, 50, 54, 48, 52, 50, 48, 52, 50].map((h, i) => (
+                  <div key={i} className="flex-1 bg-green-500/60 rounded-sm" style={{ height: `${h}%` }} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Chat messages - shown below metric cards when conversation exists */}
+        {messages.length > 0 && (
+          <div className="pt-2">
             {messages.map((message, index) => (
               <div key={message.id}>
-                {index > 0 && message.sender === 'ai' && (
-                  <div className="flex items-center gap-2 mb-2">
+                {/* User message header */}
+                {message.sender === 'user' && (
+                  <div className="text-xs text-gray-500 text-right mb-2 mt-4 first:mt-0">
+                    You 12:21
+                  </div>
+                )}
+
+                {/* AI message header */}
+                {message.sender === 'ai' && (
+                  <div className="flex items-center gap-2 mb-2 mt-4">
                     <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
                       <Sparkles className="w-3.5 h-3.5" />
                     </div>
@@ -205,20 +220,26 @@ export function ChatPanel({ messages, width, onWidthChange, onClose, onOpenTears
                     </span>
                   </div>
                 )}
+
                 <ChatMessage message={message} />
+
+                {/* Ticket artifact after each AI response */}
+                {message.sender === 'ai' && (
+                  <div className="mt-4 mb-8">
+                    <TicketArtifact
+                      title="Congestion prediction"
+                      ticketId="NEHON67250F982T"
+                      badge="AI"
+                      onViewMore={() => onOpenTearsheet('Congestion prediction', 'NEHON67250F982T')}
+                    />
+                  </div>
+                )}
               </div>
             ))}
 
-            {/* Example ticket artifact */}
-            {messages.length >= 2 && (
-              <TicketArtifact
-                title="Congestion prediction"
-                ticketId="NEHON67250F982T"
-                badge="AI"
-                onViewMore={() => onOpenTearsheet('Congestion prediction', 'NEHON67250F982T')}
-              />
-            )}
-          </>
+            {/* Scroll anchor for auto-scroll */}
+            <div ref={messagesEndRef} />
+          </div>
         )}
       </div>
     </div>
