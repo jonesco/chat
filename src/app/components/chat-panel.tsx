@@ -123,8 +123,9 @@ export function ChatPanel({ messages, width, onWidthChange, onClose, onOpenTears
 
       {/* Chat Messages and Widgets */}
       <div ref={scrollContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4">
-        {/* Metric cards - always visible */}
-        <div ref={starterContentRef} className="space-y-3">
+        {/* Metric cards - hidden when conversation starts */}
+        {messages.length === 0 && (
+          <div ref={starterContentRef} className="space-y-3">
           {/* Header */}
           <div className="mb-4">
             <div className="text-sm text-white font-medium">At a glance</div>
@@ -195,9 +196,10 @@ export function ChatPanel({ messages, width, onWidthChange, onClose, onOpenTears
               </div>
             </div>
           </div>
-        </div>
+          </div>
+        )}
 
-        {/* Chat messages - shown below metric cards when conversation exists */}
+        {/* Chat messages - shown when conversation exists */}
         {messages.length > 0 && (
           <div className="pt-2">
             {messages.map((message, index) => (
