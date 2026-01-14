@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Send, Mic, ArrowUp, Terminal, Link, Zap, FileText, BarChart } from 'lucide-react';
+import { Send, Mic, ArrowUp, Terminal, Link, Zap, FileText, BarChart, Paperclip, Wrench } from 'lucide-react';
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
@@ -147,6 +147,16 @@ export function ChatInput({ onSendMessage, hasChatStarted, chatPanelWidth }: Cha
                     <button
                       type="button"
                       className="relative group/tool p-2 rounded-full bg-[#1a1a1a] hover:bg-[#2a2a2a] transition-colors"
+                      aria-label="Attachments"
+                    >
+                      <Paperclip className="w-4 h-4 text-gray-400" />
+                      <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-[#262626] border border-[#393939] rounded text-xs whitespace-nowrap opacity-0 group-hover/tool:opacity-100 transition-opacity pointer-events-none z-50">
+                        Attachments
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      className="relative group/tool p-2 rounded-full bg-[#1a1a1a] hover:bg-[#2a2a2a] transition-colors"
                       aria-label="Commands"
                     >
                       <Terminal className="w-4 h-4 text-gray-400" />
@@ -157,21 +167,11 @@ export function ChatInput({ onSendMessage, hasChatStarted, chatPanelWidth }: Cha
                     <button
                       type="button"
                       className="relative group/tool p-2 rounded-full bg-[#1a1a1a] hover:bg-[#2a2a2a] transition-colors"
-                      aria-label="Connectors"
+                      aria-label="Tools"
                     >
-                      <Link className="w-4 h-4 text-gray-400" />
+                      <Wrench className="w-4 h-4 text-gray-400" />
                       <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-[#262626] border border-[#393939] rounded text-xs whitespace-nowrap opacity-0 group-hover/tool:opacity-100 transition-opacity pointer-events-none z-50">
-                        Connectors
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      className="relative group/tool p-2 rounded-full bg-[#1a1a1a] hover:bg-[#2a2a2a] transition-colors"
-                      aria-label="Reasoning time"
-                    >
-                      <Zap className="w-4 h-4 text-gray-400" />
-                      <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-[#262626] border border-[#393939] rounded text-xs whitespace-nowrap opacity-0 group-hover/tool:opacity-100 transition-opacity pointer-events-none z-50">
-                        Reasoning time
+                        Tools
                       </span>
                     </button>
                     <button
@@ -192,6 +192,16 @@ export function ChatInput({ onSendMessage, hasChatStarted, chatPanelWidth }: Cha
                       <BarChart className="w-4 h-4 text-gray-400" />
                       <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-[#262626] border border-[#393939] rounded text-xs whitespace-nowrap opacity-0 group-hover/tool:opacity-100 transition-opacity pointer-events-none z-50">
                         Observation metrics
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      className="relative group/tool p-2 rounded-full bg-[#1a1a1a] hover:bg-[#2a2a2a] transition-colors"
+                      aria-label="Reasoning time"
+                    >
+                      <Zap className="w-4 h-4 text-gray-400" />
+                      <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-[#262626] border border-[#393939] rounded text-xs whitespace-nowrap opacity-0 group-hover/tool:opacity-100 transition-opacity pointer-events-none z-50">
+                        Reasoning time
                       </span>
                     </button>
                   </div>
