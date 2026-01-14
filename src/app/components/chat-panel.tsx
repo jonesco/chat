@@ -113,44 +113,70 @@ export function ChatPanel({ messages, width, onWidthChange, onClose, onOpenTears
       {/* Chat Messages or Widgets */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.length === 0 ? (
-          /* Widgets when no conversation */
-          <div className="space-y-4">
-            <h3 className="text-sm font-medium text-gray-400 mb-4">Explore</h3>
-            
-            {/* Widget 1 - Network Metrics */}
-            <div className="bg-[#0d0d0d] border border-[#262626] rounded-lg p-4 hover:border-[#404040] transition-colors cursor-pointer">
-              <div className="flex items-center gap-2 mb-2">
-                <Sparkles className="w-4 h-4 text-blue-500" />
-                <span className="text-sm font-medium text-white">Network Metrics</span>
+          /* Metric cards when no conversation */
+          <div className="space-y-3">
+            {/* Row 1 - Availability and Error Budget */}
+            <div className="grid grid-cols-2 gap-3">
+              {/* Availability */}
+              <div className="bg-[#0d0d0d] border border-[#262626] rounded-lg p-3">
+                <div className="text-xs text-gray-400 mb-2">Availability</div>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-yellow-500">&#9888;</span>
+                  <span className="text-2xl font-semibold text-white">99.21%</span>
+                </div>
+                <div className="text-xs text-red-400 mt-1">&#9660; 0.4%</div>
+                <div className="text-xs text-gray-500 mt-1">Target: 99.94%</div>
               </div>
-              <p className="text-xs text-gray-400">View real-time network performance and health indicators</p>
+
+              {/* Error Budget */}
+              <div className="bg-[#0d0d0d] border border-[#262626] rounded-lg p-3">
+                <div className="text-xs text-gray-400 mb-2">Error budget</div>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-red-500">&#9679;</span>
+                  <span className="text-2xl font-semibold text-white">4.3min</span>
+                </div>
+                <div className="text-xs text-gray-500 mt-1">Budget: 504min</div>
+              </div>
             </div>
 
-            {/* Widget 2 - Anomaly Detection */}
-            <div className="bg-[#0d0d0d] border border-[#262626] rounded-lg p-4 hover:border-[#404040] transition-colors cursor-pointer">
-              <div className="flex items-center gap-2 mb-2">
-                <Sparkles className="w-4 h-4 text-blue-500" />
-                <span className="text-sm font-medium text-white">Anomaly Detection</span>
+            {/* MTTR */}
+            <div className="bg-[#0d0d0d] border border-[#262626] rounded-lg p-3">
+              <div className="text-xs text-gray-400 mb-2">MTTR</div>
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-green-500">&#10003;</span>
+                    <span className="text-2xl font-semibold text-white">38min</span>
+                  </div>
+                  <div className="text-xs text-green-400 mt-1">&#9660; 8</div>
+                  <div className="text-xs text-gray-500 mt-1">SLO: 54min</div>
+                </div>
+                <div className="h-8 w-24 flex items-end gap-px">
+                  {[40, 45, 42, 38, 44, 40, 36, 38, 35, 38, 40, 36].map((h, i) => (
+                    <div key={i} className="flex-1 bg-green-500/60 rounded-sm" style={{ height: `${h}%` }} />
+                  ))}
+                </div>
               </div>
-              <p className="text-xs text-gray-400">AI-powered detection of network irregularities</p>
             </div>
 
-            {/* Widget 3 - Traffic Analysis */}
-            <div className="bg-[#0d0d0d] border border-[#262626] rounded-lg p-4 hover:border-[#404040] transition-colors cursor-pointer">
+            {/* Cost */}
+            <div className="bg-[#0d0d0d] border border-[#262626] rounded-lg p-3">
               <div className="flex items-center gap-2 mb-2">
-                <Sparkles className="w-4 h-4 text-blue-500" />
-                <span className="text-sm font-medium text-white">Traffic Analysis</span>
+                <span className="text-green-500">&#9672;</span>
+                <span className="text-xs text-white font-medium">Cost</span>
               </div>
-              <p className="text-xs text-gray-400">Analyze traffic patterns and congestion trends</p>
-            </div>
-
-            {/* Widget 4 - Incident Management */}
-            <div className="bg-[#0d0d0d] border border-[#262626] rounded-lg p-4 hover:border-[#404040] transition-colors cursor-pointer">
-              <div className="flex items-center gap-2 mb-2">
-                <Sparkles className="w-4 h-4 text-blue-500" />
-                <span className="text-sm font-medium text-white">Incident Management</span>
+              <div className="text-xs text-gray-400 mb-1">Total cluster cost</div>
+              <div className="flex items-center justify-between">
+                <div>
+                  <span className="text-2xl font-semibold text-white">$5,331</span>
+                  <div className="text-xs text-green-400 mt-1">&#9660; 4</div>
+                </div>
+                <div className="h-8 w-24 flex items-end gap-px">
+                  {[60, 55, 58, 52, 50, 54, 48, 52, 50, 48, 52, 50].map((h, i) => (
+                    <div key={i} className="flex-1 bg-green-500/60 rounded-sm" style={{ height: `${h}%` }} />
+                  ))}
+                </div>
               </div>
-              <p className="text-xs text-gray-400">Track and manage network incidents and tickets</p>
             </div>
           </div>
         ) : (
