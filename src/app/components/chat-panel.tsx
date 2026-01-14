@@ -1,6 +1,7 @@
 import { Message } from '@/app/App';
 import { Sparkles, MoreVertical, X, Plus, History } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
+import { Tooltip, TooltipTrigger, TooltipContent } from './ui/tooltip';
 import { TicketArtifact } from './ticket-artifact';
 
 interface ChatPanelProps {
@@ -70,27 +71,42 @@ export function ChatPanel({ messages, width, onWidthChange, onClose, onOpenTears
 
       {/* Header with new chat, history, and close buttons */}
       <div className="flex items-center justify-between p-3 border-b border-[#262626]">
-        <button
-          onClick={onNewChat}
-          className="p-1.5 hover:bg-[#262626] rounded transition-colors"
-          aria-label="New chat"
-        >
-          <Plus className="w-4 h-4 text-gray-400 hover:text-white" />
-        </button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              onClick={onNewChat}
+              className="p-1.5 hover:bg-[#262626] rounded transition-colors"
+              aria-label="New chat"
+            >
+              <Plus className="w-4 h-4 text-gray-400 hover:text-white" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="bottom">New chat</TooltipContent>
+        </Tooltip>
         <div className="flex items-center gap-1">
-          <button
-            className="p-1.5 hover:bg-[#262626] rounded transition-colors"
-            aria-label="History"
-          >
-            <History className="w-4 h-4 text-gray-400 hover:text-white" />
-          </button>
-          <button
-            onClick={onClose}
-            className="p-1.5 hover:bg-[#262626] rounded transition-colors"
-            aria-label="Close chat"
-          >
-            <X className="w-4 h-4 text-gray-400 hover:text-white" />
-          </button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                className="p-1.5 hover:bg-[#262626] rounded transition-colors"
+                aria-label="History"
+              >
+                <History className="w-4 h-4 text-gray-400 hover:text-white" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">History</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                onClick={onClose}
+                className="p-1.5 hover:bg-[#262626] rounded transition-colors"
+                aria-label="Hide chat"
+              >
+                <X className="w-4 h-4 text-gray-400 hover:text-white" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">Hide chat</TooltipContent>
+          </Tooltip>
         </div>
       </div>
 
