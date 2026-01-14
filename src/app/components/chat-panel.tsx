@@ -115,6 +115,13 @@ export function ChatPanel({ messages, width, onWidthChange, onClose, onOpenTears
         {messages.length === 0 ? (
           /* Metric cards when no conversation */
           <div className="space-y-3">
+            {/* Header */}
+            <div className="mb-4">
+              <div className="text-sm text-white font-medium">At a glance</div>
+              <div className="text-xs text-gray-500">
+                {new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}, {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+              </div>
+            </div>
             {/* Row 1 - Availability and Error Budget */}
             <div className="grid grid-cols-2 gap-3">
               {/* Availability */}
